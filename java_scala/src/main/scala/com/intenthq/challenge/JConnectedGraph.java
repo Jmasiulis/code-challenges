@@ -20,14 +20,17 @@ public class JConnectedGraph {
             return true;
         }
 
+		// If nowhere to go, back from recursion or return false
         if (source.edges.isEmpty()) {
             return false;
         }
 
         for (JNode node : source.edges) {
+			// If target found already - true
             if (node.value == target.value) {
                 return true;
             }
+			// If target found deeper in recursion - true
             if (run(node, target)) {
                 return true;
             }

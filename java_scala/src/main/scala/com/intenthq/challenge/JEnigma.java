@@ -45,26 +45,33 @@ public class JEnigma {
         }
 
         String result = "";
+		// Iteration size of the message.
         int messageSize = message.size();
 
+		//Sorting map to retrieve the biggest chunk of string we can take
         Map<Integer, Character> sortedMap = getSortedMapByKey(map);
         int firstKeylength = (int)(Math.log10(sortedMap.entrySet().iterator().next().getKey()) + 1);
+		
+		// Turning array of integers into string - a bit easier to take chunks
         String messageString = message.stream().map(e -> e.toString()).reduce("", String::concat);
 
         for (int i = 0; i < messageSize; i++) {
             int numberOfSimbols = (i + firstKeylength > messageSize) ? messageSize - i : firstKeylength;
 
             for (int j = numberOfSimbols; j > 0; j--) {
+				// Key to check for value
                 String subString = messageString.substring(i, i + j);
                 Integer messageChunk = Integer.parseInt(subString);
                 Character foundValue = map.get(messageChunk);
 
                 if (foundValue != null) {
                     result += foundValue;
+					// Skip some of the encoded numbers if it's already transformed into value
                     i += j - 1;
                     break;
                 }
 
+				// If nothing found and it's already the last element - just insert it.
                 if (foundValue == null && j == 1) {
                     result += subString;
                 }
